@@ -1,10 +1,10 @@
 var querystring = require('querystring');
-var request = require('request'); // "Request" library
-// var SpotifyWebApi = require('spotify-web-api-node');
+var request = require('request'); 
+// var SpotifyApi = require('spotify-web-api-node')
 
-var client_id = '48707ed8c4ea4fc380bb8cbc121d1542'; // Your client id
-var client_secret = 'c5a64a68589c4da4846dca63d6c8f8f7'; // Your secret
-var redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
+var client_id = '48707ed8c4ea4fc380bb8cbc121d1542';
+var client_secret = 'c5a64a68589c4da4846dca63d6c8f8f7'; 
+var redirect_uri = 'http://localhost:8888/callback'; 
 
 var stateKey = 'spotify_auth_state';
 
@@ -13,7 +13,7 @@ module.exports.authenticateAccount = function(res) {
     res.cookie(stateKey, state);
     
     // your application requests authorization
-    var scope = 'user-read-private user-read-email';
+    var scope = 'user-read-private user-read-email playlist-read-private';
     res.redirect('https://accounts.spotify.com/authorize?' +
         querystring.stringify({
         response_type: 'code',
@@ -24,19 +24,19 @@ module.exports.authenticateAccount = function(res) {
         }));
 };
 
-// var spotifyApi = new SpotifyWebApi({
+// var Spotify = new SpotifyApi({
 //   clientId: client_id,
 //   clientSecret: client_secret,
 //   redirectUri: redirect_uri
 // });
 
-module.exports.spotifyCallback = function (req, res) {
-  spotifyApi.authorizationCodeGrant(req.query.code).then(function(data) {
-      spotifyApi.setAccessToken(data.body.access_token);
-      spotifyApi.setRefreshToken(data.body.refresh_token);
-      return spotifyApi.getMe()
-  });
-}
+// module.exports.spotifyCallback = function (req, res) {
+//   Spotify.authorizationCodeGrant(req.query.code).then(function(data) {
+//     Spotify.setAccessToken(data.body.access_token);
+//     Spotify.setRefreshToken(data.body.refresh_token);
+//       return Spotify.getMe()
+//   });
+// }
 
 /**
  * Generates a random string containing numbers and letters
@@ -142,6 +142,10 @@ module.exports.refreshToken = function(req, res) {
     }
   });
 };
+
+module.exports.getPlaylists = function(req, res) {
+  console.log("retrieving playlists")
+}
 
 
 

@@ -15,4 +15,8 @@ router.get('/refresh_token', function(req, res) {
     spotifyController.refreshToken(req, res)
 });
 
+router.get('/get_playlists', function(req, res) {
+    spotifyController.getPlaylists(req, res)
+});
+
 module.exports = router;
