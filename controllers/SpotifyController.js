@@ -1,6 +1,6 @@
 var querystring = require('querystring');
 var request = require('request'); 
-// var SpotifyApi = require('spotify-web-api-node')
+var access_token;
 
 var client_id = '48707ed8c4ea4fc380bb8cbc121d1542';
 var client_secret = 'c5a64a68589c4da4846dca63d6c8f8f7'; 
@@ -62,10 +62,6 @@ module.exports.callback = function(req, res) {
   var state = req.query.state || null;
   var storedState = req.cookies ? req.cookies[stateKey] : null;
 
-  console.log("code: " + code)
-  console.log("state: " + state)
-  console.log("stored state: " + req.cookies)
-
   if (state === null || state !== storedState) {
     res.redirect('/#' +
       querystring.stringify({
@@ -89,7 +85,7 @@ module.exports.callback = function(req, res) {
     request.post(authOptions, function(error, response, body) {
       if (!error && response.statusCode === 200) {
 
-        var access_token = body.access_token,
+            access_token = body.access_token,
             refresh_token = body.refresh_token;
 
         var options = {
@@ -100,7 +96,6 @@ module.exports.callback = function(req, res) {
 
         // use the access token to access the Spotify Web API
         request.get(options, function(error, response, body) {
-          console.log(body);
         });
 
         // we can also pass the token to the browser to make requests from there
@@ -117,6 +112,7 @@ module.exports.callback = function(req, res) {
       }
     });
   }
+
 };
 
 module.exports.refreshToken = function(req, res) {
@@ -144,8 +140,14 @@ module.exports.refreshToken = function(req, res) {
 };
 
 module.exports.getPlaylists = function(req, res) {
-  console.log("retrieving playlists")
-}
-
+  var options = {
+    url: 'https://api.spotify.com/v1/me/playlists',
+    headers: { 'Authorization': 'Bearer ' + access_token },
+    json: true
+  };
+  request.get(options, function(error, response, body) {
+    console.log(body)
+  });
+};
 
 
