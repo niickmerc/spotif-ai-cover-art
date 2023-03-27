@@ -23,6 +23,8 @@ module.exports.authenticateAccount = function(res) {
         redirect_uri: redirect_uri,
         state: state
         }));
+    // console.log('test');
+    // console.log(res);
 };
 
 // var Spotify = new SpotifyApi({
@@ -148,11 +150,15 @@ module.exports.getPlaylists = function(req, res) {
     json: true
   };
   request.get(options, function(error, response, body) {
-    var playlist_id_and_names = [];
-    body.items.forEach((item) => {
-      playlist_id_and_names.push([item.name,item.id]);
-    });
-    console.log(playlist_id_and_names);
+    if (!error && response.statusCode === 200) {
+      var playlistNames = [];
+      body.items.forEach((item) => {
+        playlistNames.push(item.name);
+      });
+      res.send({
+        'playlistNames': playlistNames
+      });
+    }
   });
 };
 

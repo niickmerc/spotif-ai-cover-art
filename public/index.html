@@ -27,7 +27,10 @@
         </div>
         <div id="oauth">
         </div>
+        <div id="user-playlist">
+        </div>
         <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
+        <button class="btn btn-default" id="obtain-playlists">Retrieve Playlists</button>
       </div>
     </div>
 
@@ -49,7 +52,7 @@
           </dl>
         </div>
       </div>
-      <a href="/get_playlists" class="btn btn-primary">Retrieve playlists</a>
+      <!-- <a href="/get_playlists" class="btn btn-primary">Retrieve playlists</a> -->
     </script>
 
     <script id="oauth-template" type="text/x-handlebars-template">
@@ -60,6 +63,14 @@
       </dl>
     </script>
 
+    <script id="user-playlist-template" type="text/x-handlebars-template">
+      <h3>Playlists</h3>
+      <dl class="dl-horizontal">
+        <dt>Playlist Names </dt><dd>{{names}}</dd>
+        <!-- <dt>Playlist </dt> -->
+      </dl>
+    </script>
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script>
@@ -67,6 +78,7 @@
 
         /**
          * Obtains parameters from the hash of the URL
+         * returns the "fragment" portion of the URL which is the portion following hash symbol(#)
          * @return Object
          */
         function getHashParams() {
@@ -79,13 +91,31 @@
           return hashParams;
         }
 
+        /**
+        userProfileSource is the internal HTML content of ALL elements found under user-profile-template 
+        userProfileTemplate uses Handlebars.compile() to generate a templating function that gets passed a 
+        template string (userProfileSource) with expressions... userProfileTemplate then takes in an object,
+        interpolates the object's values into the template expressions, returns completed HTML string (ex. object = {display_name: "mutee"})
+        */
+
         var userProfileSource = document.getElementById('user-profile-template').innerHTML,
             userProfileTemplate = Handlebars.compile(userProfileSource),
             userProfilePlaceholder = document.getElementById('user-profile');
-
+            
+        /** oauthSource is the internal HTML content of ALL elements found under oauth-template 
+        oauthTemplate uses Handlebars.compile() to generate a templating function that gets passed a 
+        template string (oauthSource) with expressions... oauthTemplate then takes in an object,
+        interpolates the object's values into the template expressions, returns completed HTML string (ex. object = {access_token: "82375729nsd2394-234..."})
+        */
+       
         var oauthSource = document.getElementById('oauth-template').innerHTML,
             oauthTemplate = Handlebars.compile(oauthSource),
             oauthPlaceholder = document.getElementById('oauth');
+
+        var userPlaylistSource = document.getElementById('user-playlist-template').innerHTML,
+            userPlaylistTemplate = Handlebars.compile(userPlaylistSource),
+            userPlaylistPlaceholder = document.getElementById('user-playlist');
+
 
         var params = getHashParams();
 
@@ -108,8 +138,10 @@
                 headers: {
                   'Authorization': 'Bearer ' + access_token
                 },
+                // the response returns JSON object with things like display_name, id, email, country etc which are used to create userProfilePlaceholder that is filled using the userProfileTemplate
                 success: function(response) {
                   userProfilePlaceholder.innerHTML = userProfileTemplate(response);
+                  
 
                   $('#login').hide();
                   $('#loggedin').show();
@@ -132,6 +164,20 @@
               oauthPlaceholder.innerHTML = oauthTemplate({
                 access_token: access_token,
                 refresh_token: refresh_token
+              });
+            });
+          }, false);
+
+          document.getElementById('obtain-playlists').addEventListener('click', function() {
+            $.ajax({
+              url: '/get_playlists',
+              headers: {
+                'Authorization': 'Bearer' + access_token
+              }
+            }).done(function(data) {
+              names = data.playlistNames;
+              userPlaylistPlaceholder.innerHTML = userPlaylistTemplate({
+                names: names
               });
             });
           }, false);
