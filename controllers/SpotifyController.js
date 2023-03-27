@@ -1,3 +1,4 @@
+const { validateHeaderName } = require('http');
 var querystring = require('querystring');
 var request = require('request'); 
 var access_token;
@@ -139,6 +140,7 @@ module.exports.refreshToken = function(req, res) {
   });
 };
 
+// gets all user playlists and produces a list of playlist names and ids 
 module.exports.getPlaylists = function(req, res) {
   var options = {
     url: 'https://api.spotify.com/v1/me/playlists',
@@ -146,7 +148,11 @@ module.exports.getPlaylists = function(req, res) {
     json: true
   };
   request.get(options, function(error, response, body) {
-    console.log(body)
+    var playlist_id_and_names = [];
+    body.items.forEach((item) => {
+      playlist_id_and_names.push([item.name,item.id]);
+    });
+    console.log(playlist_id_and_names);
   });
 };
 
