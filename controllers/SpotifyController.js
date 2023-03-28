@@ -1,13 +1,12 @@
 var querystring = require('querystring');
 var request = require('request'); 
-var access_token;  // not sure that this is the right path forward. there should be a better way?
+var access_token;  // not sure that this is the right path forward. there should be a better way than storing a global var/
 
 var client_id = '48707ed8c4ea4fc380bb8cbc121d1542';
 var client_secret = 'c5a64a68589c4da4846dca63d6c8f8f7'; 
 var redirect_uri = 'http://localhost:8888/callback'; 
 
 var stateKey = 'spotify_auth_state';
-
 
 // Redirects initial requests to spotify's auth service for authorization
 module.exports.authenticateAccount = function(res) {
@@ -69,13 +68,14 @@ module.exports.callback = function(req, res) {
             refresh_token = body.refresh_token;
 
         var options = {
-          url: 'https://api.spotify.com/v1/me',
+          url: 'https://api.spotify.com/v1/me',  // we could augment this call to return list of playlists during callback
           headers: { 'Authorization': 'Bearer ' + access_token },
           json: true
         };
 
         // use the access token to access the Spotify Web API
         request.get(options, function(error, response, body) {
+          console.log(body)
         });
 
         // we can also pass the token to the browser to make requests from there
