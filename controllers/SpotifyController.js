@@ -35,7 +35,7 @@ for (var i = 0; i < length; i++) {
 return text;
 };
 
-// Exchanges authorixation code for access & refresh tokens
+// Exchanges authorization code for access & refresh tokens
 module.exports.callback = function(req, res) {
   var code = req.query.code || null;
   var state = req.query.state || null;
