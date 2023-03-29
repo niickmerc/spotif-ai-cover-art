@@ -1,3 +1,3 @@
-# AI-Generated Cover Art for Spotify Playlists
+# Spotif(ai) Playlist Cover Art
 
-Andrew Park, Anmol Sangha, Nick Mercuri
+Using Spotify, ChatGPT, and Stable Diffusion to create custom cover art for your Spotify playlists
