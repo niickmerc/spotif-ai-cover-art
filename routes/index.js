@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var spotifyController = require('../controllers/SpotifyController')
+var gptController = require('../controllers/GPTController')
+var stableDiffusionController = require('../controllers/StableDiffusionController')
 
 // this file manages all routes between frontend and backend code
 router.get('/login', function(req, res) {
