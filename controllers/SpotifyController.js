@@ -1,7 +1,7 @@
 const { validateHeaderName } = require('http');
 var querystring = require('querystring');
 var request = require('request'); 
-var access_token;
+var access_token;  // not sure that this is the right path forward. there should be a better way than storing a global var/
 
 var client_id = '48707ed8c4ea4fc380bb8cbc121d1542';
 var client_secret = 'c5a64a68589c4da4846dca63d6c8f8f7'; 
@@ -9,11 +9,11 @@ var redirect_uri = 'http://localhost:8888/callback';
 
 var stateKey = 'spotify_auth_state';
 
+// Redirects initial requests to spotify's auth service for authorization
 module.exports.authenticateAccount = function(res) {
     var state = generateRandomString(16);
     res.cookie(stateKey, state);
-    
-    // your application requests authorization
+
     var scope = 'user-read-private user-read-email playlist-read-private';
     res.redirect('https://accounts.spotify.com/authorize?' +
         querystring.stringify({
@@ -27,25 +27,7 @@ module.exports.authenticateAccount = function(res) {
     // console.log(res);
 };
 
-// var Spotify = new SpotifyApi({
-//   clientId: client_id,
-//   clientSecret: client_secret,
-//   redirectUri: redirect_uri
-// });
-
-// module.exports.spotifyCallback = function (req, res) {
-//   Spotify.authorizationCodeGrant(req.query.code).then(function(data) {
-//     Spotify.setAccessToken(data.body.access_token);
-//     Spotify.setRefreshToken(data.body.refresh_token);
-//       return Spotify.getMe()
-//   });
-// }
-
-/**
- * Generates a random string containing numbers and letters
- * @param  {number} length The length of the string
- * @return {string} The generated string
- */
+// Generates a random string containing numbers and letters
 var generateRandomString = function(length) {
 var text = '';
 var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -56,11 +38,8 @@ for (var i = 0; i < length; i++) {
 return text;
 };
 
+// Exchanges authorization code for access & refresh tokens
 module.exports.callback = function(req, res) {
-
-  // your application requests refresh and access tokens
-  // after checking the state parameter
-
   var code = req.query.code || null;
   var state = req.query.state || null;
   var storedState = req.cookies ? req.cookies[stateKey] : null;
@@ -92,13 +71,14 @@ module.exports.callback = function(req, res) {
             refresh_token = body.refresh_token;
 
         var options = {
-          url: 'https://api.spotify.com/v1/me',
+          url: 'https://api.spotify.com/v1/me',  // we could augment this call to return list of playlists during callback
           headers: { 'Authorization': 'Bearer ' + access_token },
           json: true
         };
 
         // use the access token to access the Spotify Web API
         request.get(options, function(error, response, body) {
+          console.log(body)
         });
 
         // we can also pass the token to the browser to make requests from there
@@ -118,6 +98,7 @@ module.exports.callback = function(req, res) {
 
 };
 
+// Refreshes access token
 module.exports.refreshToken = function(req, res) {
 
   // requesting access token from refresh token
@@ -134,7 +115,7 @@ module.exports.refreshToken = function(req, res) {
 
   request.post(authOptions, function(error, response, body) {
     if (!error && response.statusCode === 200) {
-      var access_token = body.access_token;
+      access_token = body.access_token;
       res.send({
         'access_token': access_token
       });
@@ -142,7 +123,11 @@ module.exports.refreshToken = function(req, res) {
   });
 };
 
+<<<<<<< HEAD
 // gets all user playlists and produces a list of playlist names and ids 
+=======
+// Retrieves all playlist for the currently authenticated user
+>>>>>>> 700c3ab813c72a97be6f371e5169676e5c3fba77
 module.exports.getPlaylists = function(req, res) {
   var options = {
     url: 'https://api.spotify.com/v1/me/playlists',
