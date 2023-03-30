@@ -123,11 +123,7 @@ module.exports.refreshToken = function(req, res) {
   });
 };
 
-<<<<<<< HEAD
 // gets all user playlists and produces a list of playlist names and ids 
-=======
-// Retrieves all playlist for the currently authenticated user
->>>>>>> 700c3ab813c72a97be6f371e5169676e5c3fba77
 module.exports.getPlaylists = function(req, res) {
   var options = {
     url: 'https://api.spotify.com/v1/me/playlists',
@@ -136,12 +132,42 @@ module.exports.getPlaylists = function(req, res) {
   };
   request.get(options, function(error, response, body) {
     if (!error && response.statusCode === 200) {
-      var playlistNames = [];
+      var playlistNames_Ids = [];
+      var playlistImages = [];
       body.items.forEach((item) => {
-        playlistNames.push(item.name);
+        playlistNames_Ids.push([item.name, item.id]);
+        item.images.forEach((image) => {
+          playlistImages.push(image.url);
+      })
+    });
+      // res.send goes to localhost:8888/get_playlists and shows the list of playlist names, ids and images
+      res.send({
+        'Playlist Names and Ids': playlistNames_Ids,
+        'Playlist Images': playlistImages
+      });
+    }
+  });
+};
+
+// the req will include the playlist ID 
+module.exports.getTracks = function(req, res) {
+  var options = {
+    url: 'https://api.spotify.com/v1/playlists/75PSIlba38OMgvf9R83pwG/tracks',
+    headers: { 'Authorization': 'Bearer ' + access_token },
+    json: true
+  };
+  request.get(options, function(error, response, body) {
+    if (!error && response.statusCode === 200) {
+      var trackName_Artist = [];
+      // var trackNames = [];
+      // var trackArtists =[];
+      body.items.forEach((item) => {
+        trackName_Artist.push([item.track.name, item.track.artists[0].name]);
+        // trackNames.push(item.track.name);
+        // trackArtists.push(item.track.artists[0].name);
       });
       res.send({
-        'playlistNames': playlistNames
+        'Track Names and Artists': trackName_Artist
       });
     }
   });

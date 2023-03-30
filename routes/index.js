@@ -21,4 +21,8 @@ router.get('/get_playlists', function(req, res) {
     spotifyController.getPlaylists(req, res)
 });
 
+router.get('/get_tracks', function(req, res) {
+    spotifyController.getTracks(req, res)
+});
+
 module.exports = router;
