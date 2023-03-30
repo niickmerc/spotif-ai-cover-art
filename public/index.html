@@ -67,7 +67,6 @@
       <h3>Playlists</h3>
       <dl class="dl-horizontal">
         <dt>Playlist Names </dt><dd>{{names}}</dd>
-        <!-- <dt>Playlist </dt> -->
       </dl>
     </script>
 
@@ -102,7 +101,8 @@
             userProfileTemplate = Handlebars.compile(userProfileSource),
             userProfilePlaceholder = document.getElementById('user-profile');
             
-        /** oauthSource is the internal HTML content of ALL elements found under oauth-template 
+        /** 
+        oauthSource is the internal HTML content of ALL elements found under oauth-template 
         oauthTemplate uses Handlebars.compile() to generate a templating function that gets passed a 
         template string (oauthSource) with expressions... oauthTemplate then takes in an object,
         interpolates the object's values into the template expressions, returns completed HTML string (ex. object = {access_token: "82375729nsd2394-234..."})
@@ -175,9 +175,9 @@
                 'Authorization': 'Bearer' + access_token
               }
             }).done(function(data) {
-              names = data.playlistNames;
+              allPlaylistNames = data.playlistNames;
               userPlaylistPlaceholder.innerHTML = userPlaylistTemplate({
-                names: names
+                names: allPlaylistNames
               });
             });
           }, false);
