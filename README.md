@@ -4,12 +4,12 @@ Andrew Park, Anmol Sangha, Nick Mercuri
 
 **User Story: **
 
-Images for the playlist + names of playlist → make them clickable 
+Images for the playlist + names of playlist → make them clickable (Andrew)
 
-Get tracks after user clicks on specified playlist 
+Get tracks after user clicks on specified playlist (Andrew)
 
-Get prompt with tracks (name + artist) 
+Get prompt with tracks - name + artist (Nick)
 
-Send prompt to chatGPT → get description
+Send prompt to chatGPT → get description (Anmol)
 
 Description sent to stableDiffusion → return image 
