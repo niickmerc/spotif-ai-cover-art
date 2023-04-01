@@ -26,13 +26,13 @@ module.exports.authenticateAccount = function(res) {
 
 // Generates a random string containing numbers and letters
 var generateRandomString = function(length) {
-var text = '';
-var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var text = '';
+  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-for (var i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-}
-return text;
+  for (var i = 0; i < length; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
 };
 
 // Exchanges authorization code for access & refresh tokens
@@ -75,7 +75,6 @@ module.exports.callback = function(req, res) {
 
         // use the access token to access the Spotify Web API
         request.get(options, function(error, response, body) {
-          console.log(body)
         });
 
         // we can also pass the token to the browser to make requests from there
@@ -122,14 +121,47 @@ module.exports.refreshToken = function(req, res) {
 
 // Retrieves all playlist for the currently authenticated user
 module.exports.getPlaylists = function(req, res) {
+
   var options = {
     url: 'https://api.spotify.com/v1/me/playlists',
     headers: { 'Authorization': 'Bearer ' + access_token },
     json: true
   };
   request.get(options, function(error, response, body) {
-    console.log(body)
+    res.send({'playlists': body})
   });
 };
+
+module.exports.getPlaylistTracks = function(req, res) {
+
+  var options = {
+    url: 'https://api.spotify.com/v1/playlists/5kddin3pzSrHEumoBjV9OV/tracks',
+    headers: { 'Authorization': 'Bearer ' + access_token },
+    json: true
+  };
+  request.get(options, function(error, response, body) {
+    retArray = []
+    tracks = body["items"]
+
+    for(let i = 0; i < tracks.length; i++) {
+      trackName = tracks[i]["track"]["name"]
+      artists = getArtists(tracks[i]["track"]["artists"])
+      retArray.push(trackName + " - " + artists)
+    }
+
+    console.log(retArray)
+
+  });
+
+  function getArtists(artistList) {
+    artists = artistList[0]["name"]
+
+    for(let i = 1; i < artistList.length; i++) {
+      artists += ", " + artistList[i]["name"]
+    }
+
+    return artists
+  }
+}
 
 
