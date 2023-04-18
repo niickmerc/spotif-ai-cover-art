@@ -149,7 +149,8 @@ module.exports.getPlaylists = function(req, res) {
   });
 };
 
-// the req will include the playlist ID 
+// the req will include the playlist ID (will be used to update url)
+// this function gets track names and artists from specified playlist
 module.exports.getTracks = function(req, res) {
   var options = {
     url: 'https://api.spotify.com/v1/playlists/75PSIlba38OMgvf9R83pwG/tracks',
@@ -159,12 +160,8 @@ module.exports.getTracks = function(req, res) {
   request.get(options, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       var trackName_Artist = [];
-      // var trackNames = [];
-      // var trackArtists =[];
       body.items.forEach((item) => {
         trackName_Artist.push([item.track.name, item.track.artists[0].name]);
-        // trackNames.push(item.track.name);
-        // trackArtists.push(item.track.artists[0].name);
       });
       res.send({
         'Track Names and Artists': trackName_Artist
