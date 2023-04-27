@@ -4,6 +4,7 @@ var spotifyController = require('../controllers/SpotifyController')
 var gptController = require('../controllers/GPTController')
 var stableDiffusionController = require('../controllers/StableDiffusionController')
 
+
 // this file manages all routes between frontend and backend code
 router.get('/login', function(req, res) {
     spotifyController.authenticateAccount(res)
@@ -24,5 +25,11 @@ router.get('/get_playlists', function(req, res) {
 router.get('/get_playlist_tracks', function(req, res) {
     spotifyController.getPlaylistTracks(req, res)
 });
+
+router.get('/test', function(req, res) {
+    console.log("Connected to node.js backend")
+});
+
+
 
 module.exports = router;
