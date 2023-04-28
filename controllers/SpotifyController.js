@@ -8,6 +8,17 @@ var redirect_uri = 'http://localhost:8888/callback';
 
 var stateKey = 'spotify_auth_state';
 
+// Generates a random string containing numbers and letters
+var generateRandomString = function(length) {
+  var text = '';
+  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  for (var i = 0; i < length; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+};
+
 // Redirects initial requests to spotify's auth service for authorization
 module.exports.authenticateAccount = function(res) {
     var state = generateRandomString(16);
@@ -22,17 +33,6 @@ module.exports.authenticateAccount = function(res) {
         redirect_uri: redirect_uri,
         state: state
         }));
-};
-
-// Generates a random string containing numbers and letters
-var generateRandomString = function(length) {
-  var text = '';
-  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-  for (var i = 0; i < length; i++) {
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
 };
 
 // Exchanges authorization code for access & refresh tokens
@@ -91,7 +91,6 @@ module.exports.callback = function(req, res) {
       }
     });
   }
-
 };
 
 // Refreshes access token
