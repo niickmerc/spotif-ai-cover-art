@@ -131,6 +131,9 @@ module.exports.getPlaylists = function(req, res) {
   });
 };
 
+
+// Instead of printing to console, the playlist tracks are printed to http://localhost:8888/get_playlist_tracks
+// replaced console.log(retArray) with res.send
 module.exports.getPlaylistTracks = function(req, res) {
 
   var options = {
@@ -148,7 +151,9 @@ module.exports.getPlaylistTracks = function(req, res) {
       retArray.push(trackName + " - " + artists)
     }
 
-    console.log(retArray)
+    res.send({
+      'Playlist Tracks': retArray
+    });
 
   });
 
@@ -162,5 +167,4 @@ module.exports.getPlaylistTracks = function(req, res) {
     return artists
   }
 }
-
 

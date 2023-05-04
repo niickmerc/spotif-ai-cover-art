@@ -30,6 +30,9 @@ router.get('/test', function(req, res) {
     console.log("Connected to node.js backend")
 });
 
+router.get('/get_vibe', function(req, res) {
+    gptController.getVibe(req, res)
+});
 
 
 module.exports = router;
