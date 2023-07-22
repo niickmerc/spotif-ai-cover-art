@@ -132,4 +132,13 @@ module.exports.getPlaylists = function(req, res) {
   });
 };
 
-
+module.exports.getPlaylistImage = function(playlist_id) {
+  var options = {
+    url: `https://api.spotify.com/v1/playlists/${playlist_id}/images`,
+    headers: { 'Authorization': 'Bearer ' + access_token },
+    json: true
+  };
+  request.get(options, function(error, response, body) {
+    console.log(body);
+  });
+};

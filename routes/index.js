@@ -21,4 +21,8 @@ router.get('/get_playlists', function(req, res) {
     spotifyController.getPlaylists(req, res)
 });
 
+router.get('/get_playlist_image', function(playlist_id) {
+    spotifyController.getPlaylistImage(playlist_id)
+});
+
 module.exports = router;
