@@ -1,7 +1,24 @@
 import { useState } from "react";
+import { getPlaylistImage, getPlaylists } from "../controllers/SpotifyController";
+import axios from "axios";
 
 function PlayListViz(spotifyData) {
+
+    const fetchPlaylists = async () => {
+        try {
+            const response = await axios.get("http://localhost:8888//get_playlists"); 
+            // works but invalid access token currently when API called
+            const data = response.data;
+            console.log(data);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            // Handle error if needed
+            return null;
+        }
+    };
+
     return ( <div>
+        {fetchPlaylists()}
         <SpotifAiTitle />
         <SpotifAiTable spotifyData={spotifyData} />
     </div>        
@@ -35,8 +52,9 @@ function SpotifAiTable(spotifyData) {
     );
 }
 
+// this will be state in the future?
 // this would be the data from spotify api call GetPlaylists.
-let dataFromGetPlaylists;
+let dataFromGetPlaylists = getPlaylists();
 
 // for each playlist need to use getPlaylistImage.
 let PlaylistImages = [];
