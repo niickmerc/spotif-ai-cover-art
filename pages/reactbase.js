@@ -6,8 +6,9 @@ function PlayListViz(spotifyData) {
 
     const fetchPlaylists = async () => {
         try {
-            const response = await axios.get("http://localhost:8888//get_playlists"); 
-            // works but invalid access token currently when API called
+            // need to login first through index.html page.
+            const response = await axios.get("http://localhost:8888/get_playlists"); 
+            // works but invalid access token currently when API called. 
             const data = response.data;
             console.log(data);
         } catch (error) {
@@ -18,6 +19,7 @@ function PlayListViz(spotifyData) {
     };
 
     return ( <div>
+
         {fetchPlaylists()}
         <SpotifAiTitle />
         <SpotifAiTable spotifyData={spotifyData} />

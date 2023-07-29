@@ -4,7 +4,7 @@ var access_token;  // not sure that this is the right path forward. there should
 
 var client_id = '48707ed8c4ea4fc380bb8cbc121d1542';
 var client_secret = 'c5a64a68589c4da4846dca63d6c8f8f7'; 
-var redirect_uri = 'http://localhost:8888/callback'; 
+var redirect_uri = 'http://localhost:3000/'; // change to client-side correct? 
 
 var stateKey = 'spotify_auth_state';
 
