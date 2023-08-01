@@ -1,63 +1,26 @@
-import React from "react";
-import axios from "axios";
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import './styles.css';
 
-var client_id = '9aadd7202b3d4cf99860814dda2d5e85';
-var client_secret = 'c6a6ddfdac774ec4adffa2298ca46055'; 
-const redirect_uri = 'http://localhost:3000/'; // Your redirect URI, make sure it matches the one registered with Spotify
-const scope = 'user-read-private user-read-email playlist-read-private'; // Requested permissions
 
-var stateKey = 'spotify_auth_state';
+const MyApp = ({ Component, pageProps }) => {
+  const router = useRouter();
 
-
-export default function Login() {
-
-    // to authenticate account.
-    const authenticateAccount = async () => {
-        const state = generateRandomString(16);
-        localStorage.setItem(stateKey,state);
-        const url = `https://accounts.spotify.com/authorize?response_type=code&client_id=${client_id}&scope=${encodeURIComponent(scope)}&redirect_uri=${encodeURIComponent(redirect_uri)}&state=${state}`;
-        // const url = ('https://accounts.spotify.com/authorize?' +
-        //                 querystring.stringify({
-        //                 response_type: 'code',
-        //                 client_id: client_id,
-        //                 scope: scope,
-        //                 redirect_uri: redirect_uri,
-        //                 state: state
-        //                 }));
-        window.location.href = url;
-    }
-
-    const handleTestAPI = () => async () => {
-        try {
-            const response = await axios.get("http://localhost:8888/get_playlists");
-            console.log(response.data);
-        } catch (error) {
-            console.error("Error getting playlists");
-        }
-    }
-
-    const generateRandomString = (length) => {
-        const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        let result = '';
-        for (let i = 0; i < length; i++) {
-            result += characters.charAt(Math.floor(Math.random() * characters.length));
-        }
-        return result;
+  useEffect(() => {
+    // Function to extract the access token from the URL fragment
+    const getAccessToken = () => {
+      const hash = router.asPath.split('#')[1];
+      const params = new URLSearchParams(hash);
+      const accessToken = params.get('access_token');
+      // Now you have the access token, you can use it globally or pass it down to the pages
+      console.log('Access Token:', accessToken);
+      // You can store the access token in state or context to make it available to all pages
     };
 
-    return (
-        <div>
-            <h1>Spotif.ai <br></br></h1>
-            <h2> Generate images for your favourite playlists using AI</h2>
-        <div className="container">
-            <button onClick={authenticateAccount} className={'a'}>
-            Login with Spotify
-            </button>
-            <button onClick={handleTestAPI} className={'a'}>
-            Execute Test API Call
-            </button>
-        </div>
-        </div>
-    )
-}
+    getAccessToken();
+  }, [router.asPath]);
+
+  return <Component {...pageProps} />;
+};
+
+export default MyApp;

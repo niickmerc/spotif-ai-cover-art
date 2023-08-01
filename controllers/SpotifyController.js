@@ -2,9 +2,10 @@ var querystring = require('querystring');
 var request = require('request'); 
 var access_token;  // not sure that this is the right path forward. there should be a better way than storing a global var/
 
-var client_id = '48707ed8c4ea4fc380bb8cbc121d1542';
-var client_secret = 'c5a64a68589c4da4846dca63d6c8f8f7'; 
-var redirect_uri = 'http://localhost:3000/'; // change to client-side correct? 
+var client_id = '9aadd7202b3d4cf99860814dda2d5e85';
+var client_secret = 'c6a6ddfdac774ec4adffa2298ca46055'; 
+var redirect_uri = 'http://localhost:3000/'; // change to /reactbase after testing API call.
+
 
 var stateKey = 'spotify_auth_state';
 
