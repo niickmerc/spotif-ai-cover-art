@@ -5,19 +5,21 @@ import axios from "axios";
 function PlayListViz(spotifyData) {
 
     
-    const SpotifyCallback = () => {
-        useEffect(() => {
-        // Function to extract the access token from the URL fragment
-        const getAccessToken = () => {
-            const params = new URLSearchParams(window.location.hash.substr(1));
-            const accessToken = params.get('access_token');
-            // Now you have the access token, you can use it to make API calls
-            console.log('Access Token:', accessToken);
-        };
+    // const SpotifyCallback = () => {
+    //     useEffect(() => {
+    //     // Function to extract the access token from the URL fragment
+    //     const getAccessToken = () => {
+    //         const params = new URLSearchParams(window.location.hash.substr(1));
+    //         const accessToken = params.get('access_token');
+    //         // Now you have the access token, you can use it to make API calls
+    //         console.log('Access Token:', accessToken);
+    //     };
+
+    // you can maybe import the getaccess token from /callback, or save it and call it from localstorage.
     
-        getAccessToken();
-        }, []);
-    }
+    //     getAccessToken();
+    //     }, []);
+    // }
 
     const fetchPlaylists = async () => {
         try {
@@ -35,7 +37,7 @@ function PlayListViz(spotifyData) {
 
     return ( <div>
 
-        {fetchPlaylists()}
+        {/*fetchPlaylists()*/}
         <SpotifAiTitle />
         <SpotifAiTable spotifyData={spotifyData} />
     </div>        
@@ -71,7 +73,7 @@ function SpotifAiTable(spotifyData) {
 
 // this will be state in the future?
 // this would be the data from spotify api call GetPlaylists.
-let dataFromGetPlaylists = getPlaylists();
+let dataFromGetPlaylists // = getPlaylists();
 
 // for each playlist need to use getPlaylistImage.
 let PlaylistImages = [];
