@@ -84,13 +84,15 @@ function SpotifAiTable(spotifyData) {
 }
 
 // each row needs a column for name of playlist, playlist image, and a button for Generate.
+// should pass in playlist as a prop and then change the playlist name placeholder to {playlist.name} 
+// or whatever the variable is.
 function PlaylistRow (playlist) {
     return (
         <tr>
-            <div>
-                playlist name and picture goes here 
+            <td>                 playlist name and picture goes here </td>
+            <td>
                 <GenerateButton/>
-            </div>
+            </td>
         </tr>
     )
 }
