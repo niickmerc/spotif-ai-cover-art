@@ -48,7 +48,7 @@ function PlayListViz(spotifyData) {
 
     return ( <div>
         <SpotifAiTitle />
-        <SpotifAiTable spotifyData={spotifyData} />
+        <SpotifAiTable spotifyData={spotifyData}/>
     </div>        
     );
 }
@@ -57,26 +57,24 @@ function SpotifAiTitle() {
     return <h1>Spotif.ai</h1>
 }
 
-// here we assume we have spotifyData as a list of playlists as per sample.
+// here we assume we have spotifyData as a list of playlists as per sample, JSON being funky currently.
 function SpotifAiTable(spotifyData) {
     const rows = [];
 
-    spotifyData.forEach( (playlist) => {
+    // temporary solution to getting it as an array.
+    let spotifyPlaylists = [];
+    spotifyPlaylists.push(spotifyData);
+    spotifyPlaylists.push(spotifyData);
+    console.log("here we have " + spotifyPlaylists.length);
+    for (const playlist of spotifyPlaylists) {
         rows.push(
             <PlaylistRow playlist={playlist}/>
         );
-    });
+    }
 
-    return (<table>
+    return (<table className="container">
         <thead>
-            <tr>
-                <th> 
-
-                </th>
-                <th>
-                    Name
-                </th>
-            </tr>
+            
         </thead>
         <tbody>
             {rows}
@@ -87,7 +85,23 @@ function SpotifAiTable(spotifyData) {
 
 // each row needs a column for name of playlist, playlist image, and a button for Generate.
 function PlaylistRow (playlist) {
+    return (
+        <tr>
+            <div>
+                playlist name and picture goes here 
+                <GenerateButton/>
+            </div>
+        </tr>
+    )
+}
 
+// need to add an on-click that calls API chain to generate new playlist image.
+function GenerateButton() {
+    return (
+            <button className={'a'}>
+            Generate
+            </button>
+    )
 }
 
 // this will be state in the future?
@@ -96,7 +110,7 @@ function PlaylistRow (playlist) {
 
 // static sample. this is an array of one singular playlist. 
 // pretty sure we'll have to tease apart the API some more to turn data into this form.
-let dataFromGetPlaylists = [{
+let dataFromGetPlaylists = {
     "href": "https://api.spotify.com/v1/me/shows?offset=0&limit=20",
     "limit": 20,
     "next": "https://api.spotify.com/v1/me/shows?offset=1&limit=1",
@@ -144,7 +158,7 @@ let dataFromGetPlaylists = [{
         "uri": "string"
       }
     ]
-  }]; 
+  };
 
 // for each playlist can use getPlaylistImage.
 let PlaylistImages = [];
