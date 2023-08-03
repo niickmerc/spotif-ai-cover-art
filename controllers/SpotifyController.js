@@ -125,7 +125,7 @@ module.exports.refreshToken = function(req, res) {
 module.exports.getPlaylists = function(req, res) {
   var options = {
     url: 'https://api.spotify.com/v1/me/playlists',
-    headers: { 'Authorization': 'Bearer ' + access_token },
+    headers: { 'Authorization': 'Bearer ' + req },
     json: true
   };
   request.get(options, function(error, response, body) {

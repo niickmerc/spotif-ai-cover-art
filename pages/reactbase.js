@@ -20,12 +20,19 @@ function PlayListViz(spotifyData) {
     //     getAccessToken();
     //     }, []);
     // }
+    
+    // this works
+    const prefetchPlaylists = async () => {
+        const accessToken = localStorage.getItem('accessToken');
+        console.log("found access token in reactbase: " + accessToken);
+        return accessToken;
+    }
 
-    const fetchPlaylists = async () => {
+    // this is the bottleneck. something's not right here.
+    const fetchPlaylists = async (accessToken) => {
         try {
             // need to login first through index.html page.
-            const response = await axios.get("http://localhost:8888/get_playlists"); 
-            // works but invalid access token currently when API called. 
+            const response = await axios.get("http://localhost:8888/get_playlists", accessToken); 
             const data = response.data;
             console.log(data);
         } catch (error) {
@@ -35,9 +42,11 @@ function PlayListViz(spotifyData) {
         }
     };
 
-    return ( <div>
+    // prefetchPlaylists().then( (accessToken) => {
+    //     fetchPlaylists(accessToken);
+    // });
 
-        {/*fetchPlaylists()*/}
+    return ( <div>
         <SpotifAiTitle />
         <SpotifAiTable spotifyData={spotifyData} />
     </div>        
@@ -48,10 +57,15 @@ function SpotifAiTitle() {
     return <h1>Spotif.ai</h1>
 }
 
+// here we assume we have spotifyData as a list of playlists as per sample.
 function SpotifAiTable(spotifyData) {
     const rows = [];
-    // TODO: get spotifyData and add it onto rows per playlist. probably need to pass in spotifyImages too.
-    //       if we want to show images on main page.
+
+    spotifyData.forEach( (playlist) => {
+        rows.push(
+            <PlaylistRow playlist={playlist}/>
+        );
+    });
 
     return (<table>
         <thead>
@@ -71,11 +85,68 @@ function SpotifAiTable(spotifyData) {
     );
 }
 
+// each row needs a column for name of playlist, playlist image, and a button for Generate.
+function PlaylistRow (playlist) {
+
+}
+
 // this will be state in the future?
 // this would be the data from spotify api call GetPlaylists.
-let dataFromGetPlaylists // = getPlaylists();
+// let dataFromGetPlaylists = getPlaylists();
 
-// for each playlist need to use getPlaylistImage.
+// static sample. this is an array of one singular playlist. 
+// pretty sure we'll have to tease apart the API some more to turn data into this form.
+let dataFromGetPlaylists = [{
+    "href": "https://api.spotify.com/v1/me/shows?offset=0&limit=20",
+    "limit": 20,
+    "next": "https://api.spotify.com/v1/me/shows?offset=1&limit=1",
+    "offset": 0,
+    "previous": "https://api.spotify.com/v1/me/shows?offset=1&limit=1",
+    "total": 4,
+    "items": [
+      {
+        "collaborative": false,
+        "description": "string",
+        "external_urls": {
+          "spotify": "string"
+        },
+        "href": "string",
+        "id": "string",
+        "images": [
+          {
+            "url": "https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228",
+            "height": 300,
+            "width": 300
+          }
+        ],
+        "name": "Sample Playlist",
+        "owner": {
+          "external_urls": {
+            "spotify": "string"
+          },
+          "followers": {
+            "href": "string",
+            "total": 0
+          },
+          "href": "string",
+          "id": "string",
+          "type": "user",
+          "uri": "string",
+          "display_name": "string"
+        },
+        "public": false,
+        "snapshot_id": "string",
+        "tracks": {
+          "href": "string",
+          "total": 0
+        },
+        "type": "string",
+        "uri": "string"
+      }
+    ]
+  }]; 
+
+// for each playlist can use getPlaylistImage.
 let PlaylistImages = [];
 
 function App() {

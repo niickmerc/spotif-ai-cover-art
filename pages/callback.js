@@ -15,6 +15,7 @@ const SpotifyCallback = () => {
       return accessToken;
     };
     const accessToken = getAccessToken();
+    localStorage.setItem('accessToken',accessToken);
     setIsRedirecting(true);
 
     router.push({

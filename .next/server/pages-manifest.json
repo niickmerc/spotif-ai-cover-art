@@ -3,6 +3,5 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/reactbase": "pages/reactbase.js",
-  "/callback": "pages/callback.js"
+  "/reactbase": "pages/reactbase.js"
 }

@@ -54,9 +54,6 @@ export default function Login() {
             <button onClick={authenticateAccount} className={'a'}>
             Login with Spotify
             </button>
-            <button onClick={handleTestAPI} className={'a'}>
-            Execute Test API Call
-            </button>
         </div>
         </div>
     )
