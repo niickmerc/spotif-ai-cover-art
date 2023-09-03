@@ -13,3 +13,7 @@ Get prompt with tracks - name + artist (Nick)
 Send prompt to chatGPT → get description (Anmol)
 
 Description sent to stableDiffusion → return image
+
+
+use npm run dev for starting front-end 
+node app.js for back-end
