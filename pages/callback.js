@@ -22,7 +22,6 @@ const SpotifyCallback = () => {
         pathname: '/reactbase', // Redirect to /reactbase
         query: { access_token: accessToken }, // Pass the access token as a query parameter
     });
-    // getting an error here, cant figure it out. NVM error is in PlaylistViz. this part works.
 
   }, [router.asPath]); // Add router.asPath to the dependencies array
 
