@@ -2,9 +2,10 @@ var querystring = require('querystring');
 var request = require('request'); 
 var access_token;  // not sure that this is the right path forward. there should be a better way than storing a global var/
 
-var client_id = '48707ed8c4ea4fc380bb8cbc121d1542';
-var client_secret = 'c5a64a68589c4da4846dca63d6c8f8f7'; 
-var redirect_uri = 'http://localhost:8888/callback'; 
+var client_id = '9aadd7202b3d4cf99860814dda2d5e85';
+var client_secret = 'c6a6ddfdac774ec4adffa2298ca46055'; 
+var redirect_uri = 'http://localhost:3000/'; // change to /reactbase after testing API call.
+
 
 var stateKey = 'spotify_auth_state';
 
@@ -124,7 +125,7 @@ module.exports.refreshToken = function(req, res) {
 module.exports.getPlaylists = function(req, res) {
   var options = {
     url: 'https://api.spotify.com/v1/me/playlists',
-    headers: { 'Authorization': 'Bearer ' + access_token },
+    headers: { 'Authorization': 'Bearer ' + req },
     json: true
   };
   request.get(options, function(error, response, body) {
@@ -132,4 +133,13 @@ module.exports.getPlaylists = function(req, res) {
   });
 };
 
-
+module.exports.getPlaylistImage = function(playlist_id) {
+  var options = {
+    url: `https://api.spotify.com/v1/playlists/${playlist_id}/images`,
+    headers: { 'Authorization': 'Bearer ' + access_token },
+    json: true
+  };
+  request.get(options, function(error, response, body) {
+    console.log(body);
+  });
+};
